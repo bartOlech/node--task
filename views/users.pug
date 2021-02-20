@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title Document
+        link(rel='stylesheet' href='css/style.css')
+    body
+        div.userContainer
+            form()
+                label(for="") Lista uzytkowników 
+                select(name="" id='users-list') 
+                button.userCheckButton(type='submit' id='user-check-button') Sprawdź
+            div(id='cities-info')
+            div(id='cities-wrapper')
+                    script.
+                       const usersList = document.querySelector('#users-list')
+                       const userCheckButton = document.querySelector('#user-check-button')
+                       const citiesInfo = document.querySelector('#cities-info')
+                       const citiesWrapper = document.querySelector('#cities-wrapper')
+
+                        for(let i = 0; i < !{users}.length ; i++) {
+                            const opt = document.createElement('option');
+                            opt.value = !{users}[i].id;
+                            opt.innerHTML = !{users}[i].name;
+                            usersList.appendChild(opt);
+                        }
+                        userCheckButton.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            
+                            fetch(`/getUserCity?id=${usersList.value}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                //- clear cities data
+                                citiesWrapper.innerHTML = '';
+
+                                for(let i = 0; i < data.cities.length ; i++) {
+                                    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${data.cities[i].name}&appid=14072e2b7241e11b89fa382352757544`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log(data)
+ 
+                                        const elName= document.createElement('div');
+                                        elName.innerHTML = `Miasto: ${data.name}`;
+
+                                        const elClouds = document.createElement('div');
+                                        elClouds.innerHTML = `Zachmurzenie: ${data.clouds.all}%`;
+
+                                        const elBox = document.createElement('div');
+                                        elBox.classList.add('city-name-box')
+                                        
+                                        elBox.appendChild(elName);
+                                        elBox.appendChild(elClouds);
+
+                                        citiesWrapper.appendChild(elBox);
+                                    })
+                                }
+                            });
+                        })

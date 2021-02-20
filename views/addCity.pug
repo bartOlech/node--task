@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title Document
+        link(rel='stylesheet' href='css/style.css')
+    body
+        div.userContainer
+            form()
+                label(for="") Uzytkownik
+                select(name="" id='users-list') 
+                br
+                br
+                label Dodaj miasto
+                input(type='text' id='city-field')
+                button(id='send-btn') Dodaj
+                div(id='status-text')
+                    script.
+                       const usersList = document.querySelector('#users-list');
+                       const sendBtn = document.querySelector('#send-btn');
+                       const cityField = document.querySelector('#city-field');
+                       const statusText = document.querySelector('#status-text');
+
+                        for(let i = 0; i < !{users}.length ; i++) {
+                            const opt = document.createElement('option');
+                            opt.value = !{users}[i].id;
+                            opt.innerHTML = !{users}[i].name;
+                            usersList.appendChild(opt);
+                        }
+                        
+                        sendBtn.addEventListener('click', (e) => {
+                          e.preventDefault();
+                          fetch(`/addCity?value=${cityField.value.toUpperCase()}&userId=${usersList.value}`)   
+                          .then(response => response.json())
+                          .then(data => {
+                            statusText.innerHTML = data.status;
+                          })
+                        })
