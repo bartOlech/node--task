@@ -17,8 +17,6 @@ module.exports.get = (req, res) => {
     if (error) {
       throw error;
     } 
-    console.log(results)
     res.json({ cities: results })
-
   });
 }

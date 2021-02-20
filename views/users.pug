@@ -39,19 +39,28 @@ html(lang="en")
                                     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${data.cities[i].name}&appid=14072e2b7241e11b89fa382352757544`)
                                     .then(response => response.json())
                                     .then(data => {
+                                        //- all weather data
                                         console.log(data)
  
                                         const elName= document.createElement('div');
                                         elName.innerHTML = `Miasto: ${data.name}`;
 
+                                        const elTemp = document.createElement('div');
+                                        elTemp.innerHTML = `Temperatura: ${(data.main.temp - 273).toFixed(0)}°C`;
+
                                         const elClouds = document.createElement('div');
                                         elClouds.innerHTML = `Zachmurzenie: ${data.clouds.all}%`;
+
+                                        const elPressure = document.createElement('div');
+                                        elPressure.innerHTML = `Ciśnienie: ${data.main.pressure} hPa`;
 
                                         const elBox = document.createElement('div');
                                         elBox.classList.add('city-name-box')
                                         
                                         elBox.appendChild(elName);
                                         elBox.appendChild(elClouds);
+                                        elBox.appendChild(elPressure);
+                                        elBox.appendChild(elTemp);
 
                                         citiesWrapper.appendChild(elBox);
                                     })
